@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Details</title>
+<script>
+  function getProductDetails() {
+    let code = document.getElementById("productCode").value;
+    let obj = new XMLHttpRequest();
+    obj.onreadystatechange = function() {
+      if (obj.readyState == 4 && obj.status == 200) {
+        let data = obj.responseXML;
+        let products = data.getElementsByTagName("product");
+        alert(product.length);
+        let result = "";
+        for (let i = 0; i < products.length; i++) {
+          let productCode = products[i].getElementsByTagName("code")[0].childNodes[0].nodeValue;
+          if (productCode === code) {
+            let name = products[i].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+            let price = products[i].getElementsByTagName("price")[0].childNodes[0].nodeValue;
+            let description = products[i].getElementsByTagName("description")[0].childNodes[0].nodeValue;
+            result = "Name: " + name + "<br>Price: $" + price + "<br>Description: " + description;
+            break;
+          }
+        }
+        document.getElementById("productDetails").innerHTML = result;
+      }
+    };
+    obj.open("GET", "product.xml", true);
+    obj.send();
+  }
+</script>
+</head>
+<body>
+  <h2>Product Details</h2>
+  <label for="productCode">Enter Product Code:</label>
+  <input type="text" id="productCode">
+  <button type="button" onclick="getProductDetails()">Get Details</button>
+  <div id="productDetails"></div>
+</body>
+</html>
+
+-------------------product.xml:-----------------------------------------
+
+<?xml version="1.0" encoding="UTF-8"?>
+<products>
+  <product>
+    <code>101</code>
+    <name>pen</name>
+    <price>10.50</price>
+    <description>HI-TECPOINT 0.7 Cartridge system</description>
+  </product>
+  <product>
+    <code>102</code>
+    <name>Pencil</name>
+    <price>20.49</price>
+    <description>Apsara HP 0.4</description>
+  </product>
+  <product>
+    <code>103</code>
+    <name>box</name>
+    <price>15.75</price>
+    <description>High quality,Thin product</description>
+  </product>
+  <product>
+    <code>104</code>
+    <name>Eraser</name>
+    <price>8.99</price>
+    <description>High quality,Long time usable</description>
+  </product>
+</products>
